@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematical Statements Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            margin-right: 10px;
+        }
+        input, select, button {
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mathematical Statements Application</h1>
+    
+    <div class="container">
+        <h2>Evaluate Logical Operations</h2>
+        <div class="section">
+            <label for="inputA">Value for A:</label>
+            <select id="inputA">
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select>
+            
+            <label for="inputB">Value for B:</label>
+            <select id="inputB">
+                <option value="true">True</option>
+                <option value="false">False</option>
+            </select>
+            
+            <button onclick="evaluateLogic()">Evaluate</button>
+        </div>
+        
+        <div class="result" id="results"></div>
+    </div>
+    
+    <div class="container">
+        <h2>Truth Table Generator</h2>
+        <button onclick="generateTruthTable()">Generate Truth Table</button>
+        <div id="truthTable"></div>
+    </div>
+
+    <script>
+        // Function to evaluate logical operations
+        function evaluateLogic() {
+            // Get input values
+            const inputA = document.getElementById('inputA').value === 'true';
+            const inputB = document.getElementById('inputB').value === 'true';
+            
+            // Calculate results
+            const results = {
+                'A': inputA,
+                'B': inputB,
+                'NOT A': !inputA,
+                'NOT B': !inputB,
+                'A AND B': inputA && inputB,
+                'A OR B': inputA || inputB,
+                'A → B (IF A THEN B)': !inputA || inputB,
+                'A ↔ B (A IF AND ONLY IF B)': inputA === inputB
+            };
+            
+            // Display results
+            let resultHTML = '<h3>Results:</h3>';
+            for (const [operation, result] of Object.entries(results)) {
+                resultHTML += `<p><strong>${operation}:</strong> ${result}</p>`;
+            }
+            
+            document.getElementById('results').innerHTML = resultHTML;
+        }
+        
+        // Function to generate truth table
+        function generateTruthTable() {
+            let tableHTML = '<table>';
+            tableHTML += '<tr><th>A</th><th>B</th><th>NOT A</th><th>NOT B</th><th>A AND B</th><th>A OR B</th><th>A → B<br>(IF A THEN B)</th><th>A ↔ B<br>(A IF AND ONLY IF B)</th></tr>';
+            
+            // All possible combinations of A and B
+            const values = [true, false];
+            
+            for (const a of values) {
+                for (const b of values) {
+                    // Calculate results for this combination
+                    const notA = !a;
+                    const notB = !b;
+                    const and = a && b;
+                    const or = a || b;
+                    const implication = !a || b;
+                    const biconditional = a === b;
+                    
+                    // Add row to table
+                    tableHTML += `<tr>
+                        <td>${a}</td>
+                        <td>${b}</td>
+                        <td>${notA}</td>
+                        <td>${notB}</td>
+                        <td>${and}</td>
+                        <td>${or}</td>
+                        <td>${implication}</td>
+                        <td>${biconditional}</td>
+                    </tr>`;
+                }
+            }
+            
+            tableHTML += '</table>';
+            document.getElementById('truthTable').innerHTML = tableHTML;
+        }
+        
+        // Run the evaluation when the page loads
+        window.onload = function() {
+            evaluateLogic();
+            generateTruthTable();
+        };
+    </script>
+</body>
+</html>
